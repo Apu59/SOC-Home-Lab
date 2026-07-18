@@ -68,34 +68,32 @@ Sysmon collects detailed Windows endpoint telemetry, while the Splunk Universal 
 
 All virtual machines communicate over the same NAT network, allowing secure connectivity without exposing the lab directly to the external network.
 
-
-                         NAT Network
-──────────────────────────────────────────────────────────────
-
-              HP ProBook 430 G8 (Host Machine)
-                       │
-             Web Browser (Splunk UI)
+                 HP ProBook 430 G8
+                  (Host Machine)
+                         │
+                  Web Browser
+               (Splunk Web UI)
                   HTTP :8000
-                       │
-                       ▼
-          ┌──────────────────────────┐
-          │      Kali Linux VM       │
-          │                          │
-          │ Splunk Enterprise        │
-          │ Indexer + Web Server     │
-          └──────────▲───────────────┘
-                     │
-         TCP 9997 (Forwarded Logs)
-                     │
-                     │
-          ┌──────────┴───────────────┐
-          │      Windows 10 VM       │
-          │                          │
-          │ Sysmon                   │
-          │ Splunk Universal         │
-          │ Forwarder                │
-          │ Atomic Red Team          │
-          └──────────────────────────┘
+                         │
+                         ▼
+
+            ┌──────────────────────┐
+            │    Kali Linux VM     │
+            │                      │
+            │ Splunk Enterprise    │
+            │ Indexer + Web UI     │
+            └─────────▲────────────┘
+                      │
+          TCP 9997 (Forwarded Logs)
+                      │
+                      │
+            ┌─────────┴────────────┐
+            │    Windows 10 VM     │
+            │                      │
+            │ Sysmon               │
+            │ Splunk UF            │
+            │ Atomic Red Team      │
+            └──────────────────────┘
 
 
 Network Communication
@@ -103,8 +101,8 @@ Network Communication
 | Source          | Destination   | Protocol   | Port  | Purpose                                              |
 | --------------- | ------------- | ---------- | ----- | ---------------------------------------------------- |
 | Windows 10 VM   | Kali Linux VM | TCP        | 9997  | Forward Sysmon logs using Splunk Universal Forwarder |
-| Host Browser    | Kali Linux VM | HTTP       | 8000  | Access Splunk Web Interface                          |
-| Atomic Red Team | Windows 10 VM | PowerShell | Local | Execute attack simulations                           |
+| Host Browser    | Kali Linux VM | HTTP       | 8000  | Access Splunk Enterprise Web UI                          |
+| Atomic Red Team | Windows 10 VM | PowerShell | Local | Execute MITRE ATT&CK simulations                           |
 
 
 Virtual Machines
@@ -113,7 +111,9 @@ Virtual Machines
 | ------------- | ------------------------------------------------------- |
 | Kali Linux VM | Splunk Enterprise Server (Indexer & Web UI)             |
 | Windows 10 VM | Endpoint for attack simulation and telemetry collection |
-| Host Machine  | SOC Analyst workstation for accessing Splunk            |
+| Host Computer  | SOC Analyst workstation for accessing Splunk            |
+
+This topology enables centralized log collection, attack simulation, and security monitoring in an isolated virtual environment.
 
 ## Data Flow
 
