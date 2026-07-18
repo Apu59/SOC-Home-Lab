@@ -27,7 +27,7 @@ The SOC Home Lab consists of a Kali Linux virtual machine hosting Splunk Enterpr
 
 ### Architecture Diagram
 
-![SOC Home Lab Architecture](images/lab-architecture.png)
+![SOC Home Lab Architecture](diagrams/lab-architecture.png)
 
 ## Technologies Used
 
@@ -116,6 +116,57 @@ Virtual Machines
 This topology enables centralized log collection, attack simulation, and security monitoring in an isolated virtual environment.
 
 ## Data Flow
+
+The data flow within the SOC Home Lab follows a simple but realistic Security Operations Center workflow. Attack activities generated on the Windows 10 virtual machine are monitored by Sysmon, collected by the Splunk Universal Forwarder, transmitted to the Splunk Enterprise server running on the Kali Linux virtual machine, and finally analyzed through the Splunk Web interface.
+
+This workflow demonstrates how endpoint telemetry is collected, centralized, and investigated using SIEM technology.
+
+### Data Flow Diagram
+
+![SOC Data Flow](diagrams/data-flow.png)
+
+### Data Flow Process
+
+1. Atomic Red Team executes attack simulations on the Windows 10 virtual machine.
+
+2. Sysmon monitors system activities including:
+   - Process Creation
+   - Network Connections
+   - DNS Queries
+   - File Creation
+   - Registry Modifications
+
+3. Sysmon generates Windows Event Logs.
+
+4. Splunk Universal Forwarder collects the generated logs.
+
+5. The forwarder securely sends the logs to Splunk Enterprise over TCP Port **9997**.
+
+6. Splunk Enterprise running on the Kali Linux virtual machine receives and indexes the events.
+
+7. The SOC analyst accesses Splunk Web on **HTTP Port 8000** using a web browser.
+
+8. SPL queries are used to detect attacker activities, investigate events, and analyze indicators of compromise.
+
+### Data Flow Summary
+
+| Stage | Component | Description |
+|-------|-----------|-------------|
+| 1 | Atomic Red Team | Simulates attacker behavior |
+| 2 | Sysmon | Monitors endpoint activity |
+| 3 | Windows Event Logs | Stores telemetry |
+| 4 | Splunk Universal Forwarder | Collects logs |
+| 5 | TCP Port 9997 | Transfers logs to SIEM |
+| 6 | Splunk Enterprise | Receives and indexes logs |
+| 7 | Splunk Search & Reporting | Searches and analyzes logs |
+| 8 | SOC Analyst | Performs investigation |
+
+### Live Sysmon Events in Splunk
+
+The screenshot below demonstrates that Sysmon events generated on the Windows endpoint are successfully forwarded to Splunk Enterprise and are available for real-time investigation.
+
+![Live Sysmon Logs](screenshots/sysmon-live-events.png)
+**Figure:** Splunk Enterprise displaying live Sysmon Event ID 1 (Process Creation) logs received from the Windows 10 endpoint through Splunk Universal Forwarder.
 
 ## Installation Guide
 
