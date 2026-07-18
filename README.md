@@ -32,8 +32,7 @@ The SOC Home Lab consists of a Kali Linux virtual machine hosting Splunk Enterpr
 ## Technologies Used
 
 | Technology | Purpose |
-|------------|---------|
-
+| ---------- | ------- |
 | Splunk Enterprise | Security Information and Event Management (SIEM) |
 | Sysmon | Windows system activity logging |
 | Splunk Universal Forwarder | Forwards Windows logs to Splunk |
@@ -49,8 +48,7 @@ The SOC Home Lab consists of a Kali Linux virtual machine hosting Splunk Enterpr
 ## Lab Environment
 
 | Component | Details |
-|-----------|---------|
-
+| --------- | ------- |
 | Host Machine | HP ProBook 430 G8 |
 | Processor | Intel Core i5-1135G7 |
 | RAM | 16 GB DDR4 |
