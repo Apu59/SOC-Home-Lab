@@ -62,6 +62,59 @@ The SOC Home Lab consists of a Kali Linux virtual machine hosting Splunk Enterpr
 
 ## Network Topology
 
+The SOC Home Lab is deployed in VMware Workstation using a NAT virtual network. The environment consists of two virtual machines: a Kali Linux VM running Splunk Enterprise and a Windows 10 VM configured with Sysmon, Splunk Universal Forwarder, and Atomic Red Team.
+
+Sysmon collects detailed Windows endpoint telemetry, while the Splunk Universal Forwarder securely forwards the generated logs to the Splunk Enterprise server on TCP port 9997. Splunk indexes the incoming events and provides a web interface accessible through HTTP on port 8000 for monitoring, searching, and investigation.
+
+All virtual machines communicate over the same NAT network, allowing secure connectivity without exposing the lab directly to the external network.
+
+
+                         NAT Network
+──────────────────────────────────────────────────────────────
+
+              HP ProBook 430 G8 (Host Machine)
+                       │
+             Web Browser (Splunk UI)
+                  HTTP :8000
+                       │
+                       ▼
+          ┌──────────────────────────┐
+          │      Kali Linux VM       │
+          │                          │
+          │ Splunk Enterprise        │
+          │ Indexer + Web Server     │
+          └──────────▲───────────────┘
+                     │
+         TCP 9997 (Forwarded Logs)
+                     │
+                     │
+          ┌──────────┴───────────────┐
+          │      Windows 10 VM       │
+          │                          │
+          │ Sysmon                   │
+          │ Splunk Universal         │
+          │ Forwarder                │
+          │ Atomic Red Team          │
+          └──────────────────────────┘
+
+
+Network Communication
+
+| Source          | Destination   | Protocol   | Port  | Purpose                                              |
+| --------------- | ------------- | ---------- | ----- | ---------------------------------------------------- |
+| Windows 10 VM   | Kali Linux VM | TCP        | 9997  | Forward Sysmon logs using Splunk Universal Forwarder |
+| Host Browser    | Kali Linux VM | HTTP       | 8000  | Access Splunk Web Interface                          |
+| Atomic Red Team | Windows 10 VM | PowerShell | Local | Execute attack simulations                           |
+
+
+Virtual Machines
+
+| Machine       | Role                                                    |
+| ------------- | ------------------------------------------------------- |
+| Kali Linux VM | Splunk Enterprise Server (Indexer & Web UI)             |
+| Windows 10 VM | Endpoint for attack simulation and telemetry collection |
+| Host Machine  | SOC Analyst workstation for accessing Splunk            |
+
 ## Data Flow
 
 ## Installation Guide
