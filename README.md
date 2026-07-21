@@ -298,6 +298,97 @@ Log in using the administrator credentials created during the installation.
 
 ## Install Sysmon
 
+### Purpose
+
+Sysmon (System Monitor) is a Windows system service and device driver from Microsoft Sysinternals. It provides detailed event logging that extends the default Windows Event Logs by recording process creation, network connections, file creation, registry modifications, and other security-relevant activities. These logs are forwarded to Splunk for monitoring, threat detection, and incident investigation.
+
+---
+
+### Installation Steps
+
+1. Download Sysmon from the official Microsoft Sysinternals website.
+
+2. Extract the downloaded archive.
+
+3. Download a Sysmon configuration file (e.g., SwiftOnSecurity's Sysmon configuration) or use a custom configuration.
+
+4. Open Command Prompt or PowerShell as Administrator.
+
+5. Navigate to the extracted Sysmon directory.
+
+6. Install Sysmon using the configuration file.
+
+```powershell
+Sysmon64.exe -accepteula -i sysmonconfig-export.xml
+```
+
+---
+
+### Verification
+
+Verify that the Sysmon service has been installed successfully.
+
+Run the following command:
+
+```powershell
+sc query Sysmon64
+```
+
+Expected output:
+
+```
+STATE              : 4  RUNNING
+```
+
+To verify that Sysmon is generating events, open:
+
+```
+Event Viewer
+→ Applications and Services Logs
+    → Microsoft
+        → Windows
+            → Sysmon
+                → Operational
+```
+
+Successful installation should display Sysmon events such as:
+
+- Event ID 1 – Process Creation
+- Event ID 3 – Network Connection
+- Event ID 7 – Image Loaded
+- Event ID 11 – File Create
+- Event ID 22 – DNS Query
+
+---
+
+### Screenshot
+
+<p align="center">
+  <img src="screenshots/sysmon-service.png" alt="Sysmon Service Running" width="900">
+</p>
+
+**Figure 3:** Sysmon service successfully installed and running on the Windows endpoint.
+
+
+
+<p align="center">
+  <img src="screenshots/sysmon-operational-log.png" alt="Sysmon Operational Log" width="900">
+</p>
+
+**Figure 4:** Sysmon Operational log displaying generated security events in Windows Event Viewer.
+
+
+### Key Sysmon Events
+
+| Event ID | Description | SOC Use Case |
+|----------|-------------|--------------|
+| 1 | Process Creation | Detect suspicious processes and command execution |
+| 3 | Network Connection | Monitor outbound and inbound network activity |
+| 7 | Image Loaded | Detect DLL injection and malicious module loading |
+| 11 | File Create | Monitor file creation by malware or attackers |
+| 22 | DNS Query | Detect suspicious domain lookups and command-and-control activity |
+
+
 ## Install Splunk Universal Forwarder
 
 ## Configure Log Forwarding
