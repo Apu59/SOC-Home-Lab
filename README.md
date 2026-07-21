@@ -422,15 +422,7 @@ The Splunk Universal Forwarder (SUF) is a lightweight agent installed on the Win
 
 After installation, verify that the Splunk Universal Forwarder service is running.
 
-Open **Services** and confirm that:
-
-```
-SplunkForwarder
-```
-
-is in the **Running** state.
-
-Alternatively, verify using Command Prompt:
+Verify using Command Prompt:
 
 ```cmd
 sc query SplunkForwarder
