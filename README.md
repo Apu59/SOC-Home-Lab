@@ -170,6 +170,55 @@ The screenshot below demonstrates that Sysmon events generated on the Windows en
 
 ## Installation Guide
 
+## Prerequisites
+
+Before setting up this SOC Home Lab, ensure your host machine meets the following minimum requirements.
+
+| Component | Requirement |
+|-----------|-------------|
+| Host Operating System | Windows 10 or Windows 11 (64-bit) |
+| Virtualization Software | VMware Workstation |
+| Processor | 64-bit CPU with Virtualization (Intel VT-x or AMD-V) |
+| Memory (RAM) | Minimum 16 GB |
+| Storage | At least 100 GB of free disk space |
+
+### Software Required
+
+- VMware Workstation
+- Kali Linux (Virtual Machine)
+- Windows 10/11 (Virtual Machine)
+- Splunk Enterprise
+- Sysmon
+- Splunk Universal Forwarder
+- Atomic Red Team
+
+## Lab Setup Overview
+
+This SOC Home Lab consists of two virtual machines running on VMware Workstation.
+
+| Virtual Machine | Purpose |
+|-----------------|---------|
+| Kali Linux | Hosts Splunk Enterprise to collect, search, and analyze security logs. |
+| Windows 10 | Acts as the monitored endpoint running Sysmon, Splunk Universal Forwarder, and Atomic Red Team. |
+
+Both virtual machines are connected using VMware NAT networking, allowing the Windows endpoint to securely forward logs to the Splunk server while maintaining network connectivity.
+
+After completing the basic virtual machine setup, the remaining sections focus on configuring the core SOC components, including Splunk Enterprise, Sysmon, Splunk Universal Forwarder, log forwarding, log verification, and attack simulation using Atomic Red Team.
+
+## Install Splunk Enterprise
+
+## Install Sysmon
+
+## Install Splunk Universal Forwarder
+
+## Configure Log Forwarding
+
+## Verify Log Collection
+
+## Install Atomic Red Team
+
+## Troubleshooting
+
 ## Attack Simulations
 
 ## Splunk Detection Queries
