@@ -391,6 +391,94 @@ Successful installation should display Sysmon events such as:
 
 ## Install Splunk Universal Forwarder
 
+### Purpose
+
+The Splunk Universal Forwarder (SUF) is a lightweight agent installed on the Windows endpoint to securely collect and forward logs to the Splunk Enterprise server. In this SOC Home Lab, the forwarder sends Sysmon and Windows Event Logs to Splunk for centralized monitoring, detection, and investigation.
+
+---
+
+### Installation Steps
+
+1. Download the Splunk Universal Forwarder for Windows from the official Splunk website.
+
+2. Run the installer.
+
+3. Accept the license agreement.
+
+4. Choose the default installation location.
+
+5. When prompted, enter the Splunk receiving server information.
+
+| Setting | Value |
+|----------|-------|
+| Receiver IP | `<Kali-IP>` |
+| Receiving Port | `9997` |
+
+6. Complete the installation.
+
+---
+
+### Verify Installation
+
+After installation, verify that the Splunk Universal Forwarder service is running.
+
+Open **Services** and confirm that:
+
+```
+SplunkForwarder
+```
+
+is in the **Running** state.
+
+Alternatively, verify using Command Prompt:
+
+```cmd
+sc query SplunkForwarder
+```
+
+Expected output:
+
+```
+STATE              : 4  RUNNING
+```
+
+---
+
+### Verification
+
+Open the Splunk Universal Forwarder installation directory:
+
+```
+C:\Program Files\SplunkUniversalForwarder\
+```
+
+Verify that the following configuration files are present:
+
+```
+etc\system\local\inputs.conf
+etc\system\local\outputs.conf
+```
+
+These files are used to define which logs are collected and where they are forwarded.
+
+---
+
+### Screenshot
+
+<p align="center">
+  <img src="screenshots/suf-service.png" alt="Splunk Universal Forwarder Service" width="900">
+</p>
+
+**Figure 5:** Splunk Universal Forwarder service running successfully on the Windows endpoint.
+
+
+
+<p align="center">
+  <img src="screenshots/suf-config-files.png" alt="Splunk Universal Forwarder Configuration" width="900">
+</p>
+
+**Figure 6:** Splunk Universal Forwarder installation directory showing the local configuration files.
+
 ## Configure Log Forwarding
 
 ## Verify Log Collection
