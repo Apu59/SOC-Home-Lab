@@ -473,6 +473,113 @@ These files are used to define which logs are collected and where they are forwa
 
 ## Configure Log Forwarding
 
+### Purpose
+
+Log forwarding enables the Windows endpoint to securely send Windows Event Logs and Sysmon events to the Splunk Enterprise server for centralized monitoring and analysis. In this SOC Home Lab, the Splunk Universal Forwarder collects security logs from the Windows endpoint and forwards them to the Splunk Enterprise server over TCP port **9997**.
+
+### Configure outputs.conf
+
+Navigate to the following directory:
+
+```text
+C:\Program Files\SplunkUniversalForwarder\etc\system\local\
+```
+
+Create or edit the `outputs.conf` file with the following configuration:
+
+```ini
+[tcpout]
+defaultGroup = default-autolb-group
+
+[tcpout:default-autolb-group]
+server = 192.168.228.128:9997
+
+[tcpout-server://192.168.228.128:9997]
+```
+
+The IP address `192.168.228.128` is the Kali Linux virtual machine running Splunk Enterprise, while TCP port `9997` is configured as the receiving port for the Splunk Universal Forwarder.
+
+#### Configuration Explanation
+
+| Configuration | Description |
+|--------------|-------------|
+| `[tcpout]` | Enables forwarding of collected logs to a remote Splunk Enterprise server. |
+| `defaultGroup = default-autolb-group` | Defines the default forwarding group used by the Universal Forwarder. |
+| `[tcpout:default-autolb-group]` | Creates the forwarding group configuration. |
+| `server = 192.168.228.128:9997` | Specifies the destination Splunk Enterprise server IP address and receiving port. |
+| `[tcpout-server://192.168.228.128:9997]` | Defines the forwarding endpoint used to establish the connection with the Splunk server. |
+
+
+#### Configuration Explanation
+
+| Configuration | Description |
+|--------------|-------------|
+| `[tcpout]` | Enables forwarding of collected logs to a remote Splunk Enterprise server. |
+| `defaultGroup = default-autolb-group` | Defines the default forwarding group used by the Universal Forwarder. |
+| `[tcpout:default-autolb-group]` | Creates the forwarding group configuration. |
+| `server = 192.168.228.128:9997` | Specifies the destination Splunk Enterprise server IP address and receiving port. |
+| `[tcpout-server://192.168.228.128:9997]` | Defines the forwarding endpoint used to establish the connection with the Splunk server. |
+
+#### Configuration Explanation
+
+| Configuration | Description |
+|--------------|-------------|
+| `[WinEventLog://Application]` | Collects Windows Application event logs. |
+| `[WinEventLog://Security]` | Collects Windows Security event logs, including authentication and audit events. |
+| `[WinEventLog://System]` | Collects Windows System event logs related to operating system activities and services. |
+| `[WinEventLog://Microsoft-Windows-Sysmon/Operational]` | Collects Sysmon Operational logs containing detailed endpoint telemetry. |
+| `disabled = 0` | Enables log collection for the specified event log. |
+| `index = main` | Stores the collected events in the `main` index on the Splunk Enterprise server. |
+
+### Restart the Splunk Universal Forwarder
+
+After saving the configuration files, restart the Splunk Universal Forwarder service to apply the new settings.
+
+Open **Command Prompt** as Administrator and run:
+
+```cmd
+net stop SplunkForwarder
+
+net start SplunkForwarder
+```
+
+The service should restart successfully, allowing the updated configuration to take effect.
+
+### Verify the Configuration
+
+After restarting the Splunk Universal Forwarder:
+
+1. Confirm that the Splunk Universal Forwarder service is running.
+2. Ensure that Splunk Enterprise is configured to receive data on TCP port **9997**.
+3. Open the Splunk Web interface.
+4. Search for incoming Windows and Sysmon events to verify successful log forwarding.
+
+Successful search results confirm that the Windows endpoint is forwarding logs correctly to the Splunk Enterprise server.
+
+### Screenshot
+
+<p align="center">
+  <img src="screenshots/output.png" alt="outputs.conf Configuration" width="900">
+</p>
+
+**Figure 7:** `outputs.conf` configuration specifying the destination Splunk Enterprise server and receiving port used by the Splunk Universal Forwarder.
+
+
+<p align="center">
+  <img src="screenshots/input.png" alt="inputs.conf Configuration" width="900">
+</p>
+
+**Figure 8:** `inputs.conf` configuration enabling the collection of Windows Application, Security, System, and Sysmon Operational event logs.
+
+
+<p align="center">
+  <img src="screenshots/log-forwarding.png" alt="Log Forwarding Verification" width="900">
+</p>
+
+**Figure 9:** Splunk Enterprise successfully receiving Sysmon Operational events from the Windows endpoint through the Splunk Universal Forwarder, confirming that log forwarding is functioning correctly.
+
+
+
 ## Verify Log Collection
 
 ## Install Atomic Red Team
