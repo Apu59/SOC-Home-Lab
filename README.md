@@ -510,15 +510,35 @@ The IP address `192.168.228.128` is the Kali Linux virtual machine running Splun
 | `[tcpout-server://192.168.228.128:9997]` | Defines the forwarding endpoint used to establish the connection with the Splunk server. |
 
 
-#### Configuration Explanation
+### Configure inputs.conf
 
-| Configuration | Description |
-|--------------|-------------|
-| `[tcpout]` | Enables forwarding of collected logs to a remote Splunk Enterprise server. |
-| `defaultGroup = default-autolb-group` | Defines the default forwarding group used by the Universal Forwarder. |
-| `[tcpout:default-autolb-group]` | Creates the forwarding group configuration. |
-| `server = 192.168.228.128:9997` | Specifies the destination Splunk Enterprise server IP address and receiving port. |
-| `[tcpout-server://192.168.228.128:9997]` | Defines the forwarding endpoint used to establish the connection with the Splunk server. |
+Navigate to the same directory:
+
+```text
+C:\Program Files\SplunkUniversalForwarder\etc\system\local\
+```
+
+Create or edit the `inputs.conf` file with the following configuration:
+
+```ini
+[WinEventLog://Application]
+disabled = 0
+index = main
+
+[WinEventLog://Security]
+disabled = 0
+index = main
+
+[WinEventLog://System]
+disabled = 0
+index = main
+
+[WinEventLog://Microsoft-Windows-Sysmon/Operational]
+disabled = 0
+index = main
+```
+
+This configuration instructs the Splunk Universal Forwarder to collect Windows Application, Security, System, and Sysmon Operational logs before forwarding them to Splunk Enterprise.
 
 #### Configuration Explanation
 
