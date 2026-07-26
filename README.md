@@ -661,6 +661,105 @@ Verify the following before proceeding with attack simulations:
 
 ## Install Atomic Red Team
 
+### Purpose
+
+Atomic Red Team is an open-source adversary emulation framework based on the MITRE ATT&CK framework. It provides portable attack simulations that help security analysts validate security monitoring and generate realistic attack telemetry. In this SOC Home Lab, Atomic Red Team is used to simulate adversary techniques that are collected by Sysmon and analyzed in Splunk Enterprise.
+
+### Prerequisites
+
+Before installing Atomic Red Team, ensure that:
+
+- Windows 10 is running.
+- Sysmon is installed and generating logs.
+- Splunk Universal Forwarder is forwarding logs to Splunk Enterprise.
+- PowerShell is opened with **Administrator** privileges.
+
+### Installation Steps
+
+1. Temporarily disable **Microsoft Defender Antivirus** and **Windows Defender Firewall** to prevent Atomic Red Team files from being quarantined during extraction.
+
+   > **Note:** Re-enable your security controls after completing the installation if appropriate for your lab.
+
+2. Download the following repositories from the official Red Canary GitHub project:
+
+   - `atomic-red-team`
+   - `invoke-atomicredteam`
+
+3. Extract both repositories.
+
+4. Move the extracted folders to the following directory:
+
+   ```text
+   C:\AtomicRedTeam\
+   ```
+
+5. Open **PowerShell** as Administrator.
+
+6. Temporarily bypass the PowerShell execution policy.
+
+   ```powershell
+   powershell -exec bypass
+   ```
+
+7. Install the required PowerShell modules.
+
+   ```powershell
+   Install-Module -Name invoke-atomicredteam,powershell-yaml -Scope CurrentUser
+   ```
+
+8. Navigate to the Atomic Red Team directory.
+
+   ```powershell
+   cd C:\AtomicRedTeam\
+   ```
+
+9. Import the Invoke-AtomicRedTeam PowerShell module.
+
+   ```powershell
+   Import-Module "C:\AtomicRedTeam\invoke-atomicredteam\Invoke-AtomicRedTeam.psd1" -Force
+   ```
+
+10. Execute an Atomic Red Team test to verify the installation.
+
+    ```powershell
+    Invoke-AtomicTest T1016
+    ```
+
+If the command executes successfully, Atomic Red Team has been installed correctly and is ready to simulate MITRE ATT&CK techniques.
+
+### Repository Overview
+
+| Repository | Purpose |
+|------------|---------|
+| **atomic-red-team** | Contains the MITRE ATT&CK atomic tests, YAML definitions, payloads, and supporting resources used during attack simulation. |
+| **invoke-atomicredteam** | Provides the PowerShell framework used to execute and manage Atomic Red Team tests. |
+
+### Verification
+
+The installation is considered successful when:
+
+- The Invoke-AtomicRedTeam module imports without errors.
+- The `Invoke-AtomicTest` command executes successfully.
+- Atomic Red Team generates activity on the Windows endpoint.
+- Sysmon captures the generated events.
+- Splunk Enterprise receives and indexes the resulting logs.
+
+### Screenshots
+
+<p align="center">
+  <img src="screenshots/atomic-red-team-directory.png" alt="Atomic Red Team Directory" width="900">
+</p>
+
+**Figure 11:** Atomic Red Team installation directory containing the extracted `atomics`, `invoke-atomicredteam`, and supporting resources required for executing MITRE ATT&CK atomic tests on the Windows endpoint.
+
+<p align="center">
+  <img src="screenshots/execution-attact.png" alt="Attact Execution Successfully by Using ART" width="900">
+</p>
+
+**Figure 12:** Successful execution of the Atomic Red Team technique **T1016 (System Network Configuration Discovery)** using the Invoke-AtomicRedTeam PowerShell module, confirming that the installation is complete and the framework is ready for attack simulation.
+
+
+
 ## Troubleshooting
 
 ## Attack Simulations
